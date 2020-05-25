@@ -1,7 +1,7 @@
 # Личный проект «Типотека» [![Build status][travis-image]][travis-url]
 
 * Студент: [Эдуард Шишканов](https://up.htmlacademy.ru/nodejs/3/user/529035).
-* Наставник: `Неизвестно`.
+* Наставник: [Кирилл Коновалов](https://htmlacademy.ru/profile/id1498517).
 
 ---
 
