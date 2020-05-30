@@ -1,6 +1,7 @@
 'use strict';
 
-const fs = require(`fs`);
+const chalk = require(`chalk`);
+const fs = require(`fs`).promises;
 const {
   getRandomInt,
   shuffle,
@@ -84,23 +85,25 @@ const generateOffers = (count) => {
 
 module.exports = {
   name: `--generate`,
-  run(args) {
+  async run(args) {
     const [count] = args;
     const countOffer = Number.parseInt(count, 10) || DEFAULT_COUNT;
 
     if (countOffer > MAX_COUNT) {
-      console.log(`Не более ${MAX_COUNT} файлов!`);
+      console.log(chalk.red(`Не более ${MAX_COUNT} файлов!`));
       process.exit(EXIT_CODE.error);
     }
 
-    const content = JSON.stringify(generateOffers(countOffer));
-    fs.writeFile(FILE_NAME, content, (err) => {
-      if (err) {
-        console.log(`Ошибка, файл не записан`);
-        process.exit(EXIT_CODE.error);
-      }
 
-      return console.log(`Файл записан`);
-    });
+    const content = JSON.stringify(generateOffers(countOffer));
+
+    try {
+      await fs.writeFile(FILE_NAME, content);
+      console.log(chalk.green(`Файл записан`));
+    } catch (err) {
+      console.log(chalk.red(`Ошибка, файл не записан`));
+      process.exit(EXIT_CODE.error);
+    }
+
   }
 };
