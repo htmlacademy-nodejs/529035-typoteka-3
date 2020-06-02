@@ -21,7 +21,7 @@ const FILE_NAME = `../mocks.json`;
 const readDataFile = async (pathFile) => {
   try {
     const dataFromFile = await fs.readFile(pathFile, `utf8`);
-    return dataFromFile.split(`\n`);
+    return dataFromFile.trim().split(`\n`);
   } catch (err) {
     console.log(chalk.red(`Файл данных невозможно прочитать`, err));
     return [];
