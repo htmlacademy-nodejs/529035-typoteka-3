@@ -20,12 +20,11 @@ app.use(`/articles`, articlesRoutes);
 app.use(`/`, mainRoute);
 
 app.listen(DEFAULT_PORT, (err) => {
-    if (err) {
-      return console.log(`Не удалось запустить сервер`);
-    }
-
-    return console.log(`Сервер запущен на порту ${DEFAULT_PORT}`)
+  if (err) {
+    return console.log(`Не удалось запустить сервер`);
   }
-);
+
+  return console.log(`Сервер запущен на порту ${DEFAULT_PORT}`);
+});
 
 
