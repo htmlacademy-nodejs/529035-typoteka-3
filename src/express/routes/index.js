@@ -1,11 +1,11 @@
 'use strict';
 
-const authorizationRoutes = require(`./authorization-routes.js`);
-const userDataRoutes = require(`./user-data-routes.js`);
-const articlesRoutes = require(`./articles-routes.js`);
-const categoriesRoutes = require(`./categories-routes.js`);
-const searchRoute = require(`./search-route.js`);
-const mainRoute = require(`./main-route.js`);
+const authorizationRoutes = require(`./authorization-routes`);
+const userDataRoutes = require(`./user-data-routes`);
+const articlesRoutes = require(`./articles-routes`);
+const categoriesRoutes = require(`./categories-routes`);
+const searchRoute = require(`./search-route`);
+const mainRoute = require(`./main-route`);
 
 module.exports = {
   authorizationRoutes,
