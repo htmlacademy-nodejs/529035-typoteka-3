@@ -1,51 +1,34 @@
 'use strict';
 
-const http = require(`http`);
-const chalk = require(`chalk`);
-const fs = require(`fs`).promises;
+const express = require(`express`);
 
 const {HTTP_CODE} = require(`../../constants`);
+const postsRoutes = require(`../routes/posts-routes`);
 const DEFAULT_PORT = 3000;
-const FILE_PATH = `../mocks.json`;
 
-const sendResponse = (res, statusCode, message) => {
-  const template = `
-    <!Doctype html>
-      <html lang="ru">
-      <head>
-        <title>Разработка на Node</title>
-      </head>
-      <body>${message}</body>
-    </html>`.trim();
+const app = express();
+app.use(express.json());
+app.use(`/posts`, postsRoutes);
 
-  res.statusCode = statusCode;
-  res.writeHead(statusCode, {
-    'Content-Type': `text/html; charset=UTF-8`,
-  });
 
-  res.end(template);
-};
+app.use((err, req, res, next) => {
+  console.log(err);
 
-const onClientConnect = async (request, response) => {
-  const notFoundMessageText = `Not found`;
-
-  switch (request.url) {
-    case `/`:
-      try {
-        const fileContent = await fs.readFile(FILE_PATH);
-        const mocks = JSON.parse(fileContent);
-        const htmlContent = mocks.map((post) => `<li>${post.title}</li>`).join(``);
-        sendResponse(response, HTTP_CODE.success, `<ul>${htmlContent}</ul>`);
-      } catch (err) {
-        sendResponse(response, HTTP_CODE.notFound, notFoundMessageText);
-      }
-      break;
-
-    default:
-      sendResponse(response, HTTP_CODE.notFound, notFoundMessageText);
-      break;
+  if (!err.statusCode) {
+    err.statusCode = HTTP_CODE.serverError;
   }
-};
+
+  switch (err.statusCode) {
+    case HTTP_CODE.notFound:
+      res.status(HTTP_CODE.notFound).send(err);
+      break;
+    case HTTP_CODE.serverError:
+      res.status(HTTP_CODE.serverError).send(err);
+      break;
+    default:
+      res.status(err.statusCode).send(err);
+  }
+});
 
 module.exports = {
   name: `--server`,
@@ -53,13 +36,13 @@ module.exports = {
 
     const [customPort] = args;
     const port = Number.parseInt(customPort, 10) || DEFAULT_PORT;
-    const httpServer = http.createServer(onClientConnect);
 
-    httpServer.listen(port, (err) => {
+    app.listen(port, (err) => {
       if (err) {
-        return console.error(`Ошибка при создании http-сервера. `, err);
+        return console.log(`Не удалось запустить сервер`);
       }
-      return console.info(chalk.green(`Принимаю подключение на порт ${port}`));
+
+      return console.log(`Сервер запущен на порту ${port}`);
     });
   }
 };
