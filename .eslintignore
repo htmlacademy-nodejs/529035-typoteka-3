@@ -1,0 +1,2 @@
+# Закрываем публичные файлы JS
+/src/express/public/js

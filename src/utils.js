@@ -51,14 +51,8 @@ const getRandomArray = (oldArray) => {
   return newArray;
 };
 
-const HTTP_CODE = {
-  success: 200,
-  notFound: 404,
-};
-
 module.exports = {
   shuffle,
   getRandomInt,
   getRandomArray,
-  HTTP_CODE,
 };

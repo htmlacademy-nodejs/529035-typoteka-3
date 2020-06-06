@@ -6,3 +6,8 @@ env:
   node: true
 
 extends: 'htmlacademy/node'
+
+rules:
+  no-unused-vars:
+  - error
+  - argsIgnorePattern: "next"
