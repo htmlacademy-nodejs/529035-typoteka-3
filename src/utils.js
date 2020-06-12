@@ -51,8 +51,13 @@ const getRandomArray = (oldArray) => {
   return newArray;
 };
 
+const getFormatDate = (objectDate) => {
+  return objectDate.getFullYear() + `-` + (`0` + (objectDate.getMonth() + 1)).slice(-2) + `-` + (`0` + objectDate.getDate()).slice(-2) + ` ` + (`0` + objectDate.getHours()).slice(-2) + `:` + (`0` + objectDate.getMinutes()).slice(-2) + `:` + (`0` + objectDate.getSeconds()).slice(-2);
+};
+
 module.exports = {
   shuffle,
   getRandomInt,
   getRandomArray,
+  getFormatDate,
 };

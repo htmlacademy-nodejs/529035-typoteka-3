@@ -1,0 +1,35 @@
+'use strict';
+
+const fs = require(`fs`).promises;
+const path = require(`path`);
+const FILE_PATH = path.join(__dirname, `../../mocks.json`);
+let data = null;
+
+const getMockData = async () => {
+
+  if (data !== null) {
+    return Promise.resolve(data);
+  }
+
+  try {
+    const fileContent = await fs.readFile(FILE_PATH);
+    data = JSON.parse(fileContent);
+  } catch (err) {
+    console.log(err);
+    return Promise.reject(err);
+  }
+
+  return Promise.resolve(data);
+
+};
+
+(async () => {
+  try {
+    const fileContent = await fs.readFile(FILE_PATH);
+    data = JSON.parse(fileContent);
+  } catch (err) {
+    console.log(err);
+  }
+})();
+
+module.exports = getMockData;

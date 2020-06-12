@@ -2,13 +2,21 @@
 
 const express = require(`express`);
 
-const {HTTP_CODE} = require(`../../constants`);
-const postsRoutes = require(`../routes/posts-routes`);
+const {HTTP_CODE, API_PREFIX, EXIT_CODE} = require(`../../constants`);
+const apiRoutes = require(`../api`);
+const getMockData = require(`../lib/get-mock-data`);
+
 const DEFAULT_PORT = 3000;
 
 const app = express();
+
 app.use(express.json());
-app.use(`/posts`, postsRoutes);
+app.use(API_PREFIX, apiRoutes);
+
+/* app.use(`*`, (err, req, res, next) => {
+  err.statusCode = HTTP_CODE.notFound;
+  next(err);
+}); */
 
 
 app.use((err, req, res, next) => {
@@ -32,17 +40,25 @@ app.use((err, req, res, next) => {
 
 module.exports = {
   name: `--server`,
-  run(args) {
+  async run(args) {
 
     const [customPort] = args;
     const port = Number.parseInt(customPort, 10) || DEFAULT_PORT;
 
-    app.listen(port, (err) => {
-      if (err) {
-        return console.log(`Не удалось запустить сервер`);
-      }
+    try {
+      await getMockData();
 
-      return console.log(`Сервер запущен на порту ${port}`);
-    });
+      app.listen(port, (err) => {
+        if (err) {
+          return console.log(`Не удалось запустить сервер`);
+        }
+
+        return console.log(`Сервер запущен на порту ${port}`);
+      });
+
+    } catch (err) {
+      console.error(`Произошла ошибка: ${err.message}`);
+      process.exit(EXIT_CODE.error);
+    }
   }
 };
