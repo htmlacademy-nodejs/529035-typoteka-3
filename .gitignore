@@ -14,5 +14,6 @@ node_modules/
 # Папка с собранными файлами проекта
 build/
 
-# Файл с моками
+# Служебные файлы
 src/mocks.json
+src/logs/info.log
