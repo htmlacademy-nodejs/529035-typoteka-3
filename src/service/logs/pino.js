@@ -6,6 +6,7 @@ const path = require(`path`);
 const logger = require(`pino`)({
   name: `pino-and-express`,
   level: process.env.LOG_LEVEL || `info`,
+  prettyPrint: process.env.LOG_LEVEL === `debug`
 }, pino.destination(path.join(__dirname, `./info.log`)));
 
 module.exports = {
