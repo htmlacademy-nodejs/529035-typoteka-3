@@ -2,7 +2,10 @@
 
 const fs = require(`fs`).promises;
 const path = require(`path`);
+
+const {logger} = require(`../logs/pino`);
 const FILE_PATH = path.join(__dirname, `../../mocks.json`);
+
 let data = null;
 
 const getMockData = async () => {
@@ -15,7 +18,7 @@ const getMockData = async () => {
     const fileContent = await fs.readFile(FILE_PATH);
     data = JSON.parse(fileContent);
   } catch (err) {
-    console.log(err);
+    logger.error(err);
     return Promise.reject(err);
   }
 
@@ -28,7 +31,7 @@ const getMockData = async () => {
     const fileContent = await fs.readFile(FILE_PATH);
     data = JSON.parse(fileContent);
   } catch (err) {
-    console.log(err);
+    logger.error(err);
   }
 })();
 
