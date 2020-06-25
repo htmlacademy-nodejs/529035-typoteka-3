@@ -5,7 +5,7 @@ const {api} = require(`../api`);
 
 const searchRouter = new Router();
 
-searchRouter.get(`/`, async (req, res) => {
+searchRouter.get(`/`, (req, res) => {
   if (req.query.query) {
     const query = encodeURIComponent(req.query.query);
     api.get(`/api/search?query=${query}`)
