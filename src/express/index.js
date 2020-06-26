@@ -20,6 +20,7 @@ const app = express();
 app.use(express.static(path.resolve(__dirname, PUBLIC_DIR)));
 app.set(`views`, path.resolve(__dirname, `templates`));
 app.set(`view engine`, `pug`);
+app.use(express.urlencoded({extended: false}));
 
 app.use(`/`, authorizationRoutes);
 app.use(`/my`, userDataRoutes);
@@ -28,10 +29,9 @@ app.use(`/articles`, articlesRoutes);
 app.use(`/search`, searchRoute);
 app.use(`/`, mainRoute);
 
-app.get(`*`, (req, res, next) => {
-  let err = new Error(`Страница не найдена ${req.originalUrl}`);
-  err.statusCode = HTTP_CODE.notFound;
-  next(err);
+app.use(`*`, (req, res) => {
+  console.log(`Page ${req.originalUrl} not found`);
+  return res.status(404).render(`errors/404`);
 });
 
 app.use((err, req, res, next) => {
